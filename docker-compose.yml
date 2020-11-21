@@ -1,0 +1,10 @@
+version: "3"
+services:
+  post-service:
+    image: post-service
+    ports:
+      - "7000:7000"
+  user-service:
+    image: user-service
+    ports:
+      - "8000:8000"
