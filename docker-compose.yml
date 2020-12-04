@@ -1,11 +1,19 @@
 version: "3"
 services:
   post-service:
+    container_name: post-service
     build: ./post-service
     ports:
       - 7000:7000
+    volumes:
+      - post-service:/app
   user-service:
+    container_name: user-service
     build: ./user-service
     ports:
       - 8000:8000
-
+    volumes:
+      - user-service:/app
+volumes:
+  post-service: 
+  user-service:

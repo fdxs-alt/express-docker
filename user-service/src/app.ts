@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 app.get("/", (req, res) => {
-  res.json({ message: "Not working " });
+  res.json({ message: "Not working ojlolo " });
 });
 
 const PORT = process.env.PORT || 8000;

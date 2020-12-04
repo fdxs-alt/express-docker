@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send(`Hello from post service EHdH`);
+  res.send(`Hello from post servio sce EHdH`);
 });
 const PORT = process.env.PORT || 7000;
 
