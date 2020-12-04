@@ -1,14 +1,18 @@
-import * as express from "express";
+import express from "express";
 
-const app = express();
+function initApp() {
+  const app = express();
 
-app.use(express.json());
-app.get("/", (req, res) => {
-  res.json({ message: "Not working ojlolo " });
-});
+  app.use(express.json());
+  app.get("/", (req, res) => {
+    res.json({ message: "Nost working ojlolos" });
+  });
 
-const PORT = process.env.PORT || 8000;
+  const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+initApp();
