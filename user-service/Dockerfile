@@ -1,15 +1,13 @@
-FROM node 
+FROM node:14.5-alpine
 
-WORKDIR /usr/app
+ADD . ./app
 
-COPY package*.json ./
+WORKDIR /app
+
+RUN npm i -g nodemon ts-node typescript
 
 RUN npm install
 
-COPY . .
+EXPOSE 7000
 
-RUN npm run build
-
-EXPOSE 8000
-
-CMD node dist/src/index.js
+ENTRYPOINT [ "npm", "start" ] 

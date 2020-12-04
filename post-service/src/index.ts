@@ -5,9 +5,8 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send(`Hello from post service`);
+  res.send(`Hello from post service EHdH`);
 });
-
 const PORT = process.env.PORT || 7000;
 
 app.listen(PORT, () => {

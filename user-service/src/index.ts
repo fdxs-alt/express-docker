@@ -3,9 +3,8 @@ import * as express from "express";
 const app = express();
 
 app.use(express.json());
-
 app.get("/", (req, res) => {
-  res.send(`Hello from user service`);
+  res.json({ message: "Not working " });
 });
 
 const PORT = process.env.PORT || 8000;
