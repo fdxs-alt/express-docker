@@ -1,9 +1,13 @@
 FROM node:14.5-alpine
 
-RUN mkdir /app
+ADD . ./app
 
 WORKDIR /app
 
-RUN npm install -g nodemon ts-node typescript
+RUN npm i -g nodemon ts-node typescript
 
-RUN yarn
+RUN npm install
+
+EXPOSE 7000
+
+ENTRYPOINT [ "npm", "start" ] 
