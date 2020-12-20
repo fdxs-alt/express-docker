@@ -1,13 +1,9 @@
-FROM node:14.5-alpine
+FROM node:14-alpine
 
-ADD . ./app
+COPY . /opt/app
 
-WORKDIR /app
+WORKDIR /opt/app
 
-RUN npm i -g nodemon ts-node typescript
+RUN yarn
 
-RUN npm install
-
-EXPOSE 7000
-
-ENTRYPOINT [ "npm", "start" ] 
+CMD yarn dev

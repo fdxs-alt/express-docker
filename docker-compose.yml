@@ -1,19 +1,34 @@
 version: "3"
 services:
-  post-service:
-    container_name: post-service
-    build: ./post-service
-    ports:
-      - 7000:7000
-    volumes:
-      - post-service:/app
   user-service:
-    container_name: user-service
-    build: ./user-service
-    ports:
-      - 8000:8000
+    build: "./user-service"
     volumes:
-      - user-service:/app
-volumes:
+      - ./user-service:/opt/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service-db
   post-service:
-  user-service:
+    build: "./post-service"
+    volumes:
+      - ./post-service:/opt/app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - post-service-db
+  post-service-db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: posts
+    ports:
+      - "5432:5432"
+  user-service-db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: user
+    ports:
+      - "5433:5433"
