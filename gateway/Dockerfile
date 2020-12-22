@@ -6,6 +6,6 @@ WORKDIR /opt/app
 
 RUN yarn
 
-EXPOSE 3001
+EXPOSE 8000
 
 CMD yarn dev
