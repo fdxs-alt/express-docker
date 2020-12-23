@@ -10,11 +10,11 @@ COPY prisma ./prisma/
 
 RUN yarn
 
-RUN yarn prisma generate 
+RUN yarn prisma generate
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3001
 
 VOLUME [ "/app/node_modules" ]
 

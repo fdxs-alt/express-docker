@@ -1,5 +1,5 @@
 const express = require("express");
-const { json } = require("express");
+const { json, urlencoded } = require("express");
 const morgan = require("morgan");
 const { redis } = require("./redis");
 const cors = require("cors");
@@ -14,6 +14,7 @@ const main = async () => {
   app.use(morgan("dev"));
 
   app.use(json());
+  app.use(urlencoded({ extended: false }));
 
   app.use(
     session({

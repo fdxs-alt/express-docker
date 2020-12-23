@@ -3,47 +3,60 @@ services:
   gateway:
     build: "./gateway"
     volumes:
-      - ./gateway:/opt/app
+      - ./gateway:/app
     ports:
       - "8000:8000"
     depends_on:
       - gateway-redis
     environment:
       REDIS_SECRET: redissecret
+
   user-service:
     build: "./user-service"
     volumes:
-      - ./user-service:/opt/app
+      - ./user-service:/app
     ports:
       - "3000:3000"
     depends_on:
       - user-service-db
       - gateway
-  post-service:
-    build: "./post-service"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@user-service-db:5433/user
+
+  note-service:
+    build: "./note-service"
     volumes:
-      - ./post-service:/opt/app
+      - ./note-service:/app
     ports:
       - "3001:3001"
     depends_on:
-      - post-service-db
+      - note-service-db
       - gateway
-  post-service-db:
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://postgres:postgres@note-service-db:5432/notes
+
+  note-service-db:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: posts
+      POSTGRES_DB: notes
+    restart: always
     ports:
       - "5432:5432"
+
   user-service-db:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: user
+    restart: always
     ports:
       - "5433:5433"
+
   gateway-redis:
     image: redis
     ports:

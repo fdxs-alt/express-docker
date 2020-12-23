@@ -1,7 +1,8 @@
 const Redis = require("ioredis");
+const { REDIS_HOST } = require("./utils/constants");
 
 const redis = new Redis({
-  host: "gateway-redis",
+  host: REDIS_HOST,
   port: 6379,
 });
 
