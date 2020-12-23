@@ -4,12 +4,12 @@ WORKDIR /app
 
 COPY package.json /app
 
+COPY yarn.lock /app
+
 RUN yarn
 
 COPY  . /app
 
 EXPOSE 8000
-
-VOLUME [ "/app/node_modules" ]
 
 CMD yarn dev

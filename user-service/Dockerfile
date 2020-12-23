@@ -6,16 +6,10 @@ COPY package.json ./
 
 COPY yarn.lock ./
 
-COPY prisma ./prisma/
-
 RUN yarn
-
-RUN yarn prisma generate 
 
 COPY . .
 
 EXPOSE 3000
-
-VOLUME [ "/app/node_modules" ]
 
 CMD yarn dev

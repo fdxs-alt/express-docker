@@ -22,7 +22,7 @@ services:
       - gateway
     environment:
       PORT: 3000
-      DATABASE_URL: postgresql://postgres:postgres@user-service-db:5433/user
+      DATABASE_URL: mysql://mysql:mysql@user-service-db:3306/users
 
   note-service:
     build: "./note-service"
@@ -35,27 +35,37 @@ services:
       - gateway
     environment:
       PORT: 3001
-      DATABASE_URL: postgresql://postgres:postgres@note-service-db:5432/notes
+      DATABASE_URL: mysql://mysql:mysql@note-service-db:3306/notes
 
   note-service-db:
-    image: postgres
+    image: mysql
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: notes
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: notes
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
     restart: always
     ports:
-      - "5432:5432"
+      - "5432:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    expose:
+      - 5432
 
   user-service-db:
-    image: postgres
+    image: mysql
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: user
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: users
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
     restart: always
     ports:
-      - "5433:5433"
+      - "5433:3306"
+    volumes:
+      - mysqltwo:/var/lib/mysql
+    expose:
+      - 5433
 
   gateway-redis:
     image: redis
@@ -63,3 +73,9 @@ services:
       - "6379:6379"
     expose:
       - 6379
+
+volumes:
+  mysql:
+    name: prisma-db-users
+  mysqltwo:
+    name: prisma-db-notes
