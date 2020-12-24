@@ -18,7 +18,7 @@ services:
       - ./user-service:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "4000:4000"
     depends_on:
       - user-service-db
       - gateway

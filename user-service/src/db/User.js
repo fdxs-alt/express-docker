@@ -1,12 +1,8 @@
 const { User } = require(".");
 const { hash } = require("bcrypt");
 class UserModelMethods {
-  constructor() {
-    this.createNewUser = this.createNewUser.bind(this);
-  }
-
   static async createNewUser({ email, nick, password }) {
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hash(password, 10);
     return User.create({
       email,
       nick,
@@ -18,16 +14,12 @@ class UserModelMethods {
     return User.destroy({ where: { id } });
   }
 
-  static getUser(id) {
+  static getUserbyId(id) {
     return User.findOne({ where: { id } });
   }
 
-  static findUserWithEmail(email) {
-    return User.findOne({ where: { email } });
-  }
-
-  hashPassword(password) {
-    return hash(password, 10);
+  static findUser(params) {
+    return User.findOne({ where: params });
   }
 }
 
