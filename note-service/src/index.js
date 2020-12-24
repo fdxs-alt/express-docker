@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const { Note } = require("./db/index");
+const routes = require("./Routes");
 
 const main = () => {
   const app = express();
@@ -12,18 +12,14 @@ const main = () => {
   app.use(urlencoded({ extended: false }));
   app.use(cors({ credentials: true }));
   app.use(helmet());
+  app.use("/", routes);
+  
+  app.use((err, req, res, next) => {
+    res.status(err.status).json({ error: err.message });
+    next();
+  });
 
   const PORT = process.env.PORT | 3001;
-
-  app.get("/", async (req, res) => {
-    const newNote = await Note.create({
-      content: "random content",
-      title: "random tittle",
-      userID: "1234",
-    });
-
-    res.json({ newNote });
-  });
 
   app.listen(PORT, () => {
     console.log(`Running on PORT ${PORT}`);

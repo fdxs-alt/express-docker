@@ -4,46 +4,44 @@ services:
     build: "./gateway"
     volumes:
       - ./gateway:/app
+      - /app/node_modules
     ports:
       - "8000:8000"
     depends_on:
       - gateway-redis
-    environment:
-      REDIS_SECRET: redissecret
+    env_file:
+      - ./env/redis.env
 
   user-service:
     build: "./user-service"
     volumes:
       - ./user-service:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
       - user-service-db
       - gateway
-    environment:
-      PORT: 3000
-      DATABASE_URL: mysql://mysql:mysql@user-service-db:3306/users
+    env_file:
+      - ./env/users.env
 
   note-service:
     build: "./note-service"
     volumes:
       - ./note-service:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
     depends_on:
       - note-service-db
       - gateway
-    environment:
-      PORT: 3001
-      DATABASE_URL: mysql://mysql:mysql@note-service-db:3306/notes
+    env_file:
+      - ./env/notes.env
 
   note-service-db:
     image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: mysql
-      MYSQL_DATABASE: notes
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
+    env_file:
+      - ./env/notes-db.env
     restart: always
     ports:
       - "5432:3306"
@@ -54,11 +52,8 @@ services:
 
   user-service-db:
     image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: mysql
-      MYSQL_DATABASE: users
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
+    env_file:
+      - ./env/users-db.env
     restart: always
     ports:
       - "5433:3306"
@@ -76,6 +71,4 @@ services:
 
 volumes:
   mysql:
-    name: prisma-db-users
   mysqltwo:
-    name: prisma-db-notes
