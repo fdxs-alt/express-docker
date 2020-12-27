@@ -5,6 +5,9 @@ const { redis } = require("./redis");
 const cors = require("cors");
 const session = require("express-session");
 const connectRedis = require("connect-redis");
+const { ApolloServer } = require("apollo-server-express");
+const { resolvers, typeDefs } = require("./graphql/index");
+const { path } = require("./utils/constants");
 
 const main = async () => {
   const RedisStore = connectRedis(session);
@@ -37,6 +40,14 @@ const main = async () => {
       origin: "http://localhost:3000",
     })
   );
+
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => ({ req, redis }),
+  });
+
+  server.applyMiddleware({ app, path: path, cors: false });
 
   const PORT = process.env.PORT | 8000;
 
