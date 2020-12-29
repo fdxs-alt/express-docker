@@ -2,6 +2,16 @@ const createHttpError = require("http-errors");
 const UserModelMethods = require("./db/User");
 const { compare } = require("bcrypt");
 class UserController {
+  static async getUser(req, res, next) {
+    const { userID } = req.params;
+    console.log(userID);
+    const { dataValues } = await UserModelMethods.getUserById(userID);
+
+    const { password: _, ...rest } = dataValues;
+
+    res.status(200).json({ user: rest });
+  }
+
   static async register(req, res, next) {
     const { nick, email, password } = req.body;
 
@@ -44,7 +54,7 @@ class UserController {
       return next(createHttpError(401, "Email or password is wrong"));
     }
 
-    res.status(200).json({ rest });
+    res.status(200).json({ user: rest });
   }
 }
 

@@ -14,7 +14,7 @@ class UserModelMethods {
     return User.destroy({ where: { id } });
   }
 
-  static getUserbyId(id) {
+  static getUserById(id) {
     return User.findOne({ where: { id } });
   }
 

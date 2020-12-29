@@ -1,5 +1,5 @@
 const express = require("express");
-const { json, urlencoded } = require("express");
+const { json } = require("express");
 const morgan = require("morgan");
 const { redis } = require("./redis");
 const cors = require("cors");
@@ -10,14 +10,13 @@ const { resolvers, typeDefs } = require("./graphql/index");
 const { path } = require("./utils/constants");
 
 const main = async () => {
-  const RedisStore = connectRedis(session);
-
   const app = express();
+
+  const RedisStore = connectRedis(session);
 
   app.use(morgan("dev"));
 
   app.use(json());
-  app.use(urlencoded({ extended: false }));
 
   app.use(
     session({
@@ -28,7 +27,7 @@ const main = async () => {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        secure: true,
+        secure: false,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 7,
       },
     })
@@ -37,7 +36,6 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:3000",
     })
   );
 
@@ -47,7 +45,7 @@ const main = async () => {
     context: ({ req }) => ({ req, redis }),
   });
 
-  server.applyMiddleware({ app, path: path, cors: false });
+  server.applyMiddleware({ app, path, cors: false });
 
   const PORT = process.env.PORT | 8000;
 

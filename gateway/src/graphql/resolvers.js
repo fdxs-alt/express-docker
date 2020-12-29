@@ -1,8 +1,3 @@
-const resolvers = {
-  Query: {
-    hello: (_, __, context) => {
-      return "Hello";
-    },
-  },
-};
+const UserResolver = require("./resolvers/UserResolver");
+const resolvers = [UserResolver];
 module.exports = resolvers;
