@@ -6,7 +6,7 @@ services:
       - /app/node_modules
       - ./frontend/src:/app/src
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - gateway
     stdin_open: true
