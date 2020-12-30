@@ -1,40 +1,79 @@
 const { AuthenticationError } = require("apollo-server-express");
 const axios = require("axios");
-const { USER_SERVICE } = require("../../utils/constants");
+const {
+  validateSchema,
+  createValidationError,
+  createError,
+  setJWT,
+  USER_SERVICE,
+} = require("../../utils/.");
 
 module.exports = {
   Mutation: {
     register: async (_, args, ctx) => {
       const { args: registerCridentials } = args;
+      try {
+        await validateSchema(registerCridentials, "REGISTER");
+      } catch (error) {
+        createValidationError(error);
+      }
 
-      const { data } = await axios.post(
-        USER_SERVICE + "/register",
-        registerCridentials
-      );
-      ctx.req.session.userID = data.newUser.id;
-      return data.newUser;
+      try {
+        const { data } = await axios.post(
+          USER_SERVICE + "/register",
+          registerCridentials
+        );
+
+        setJWT(ctx.req, data.newUser.id);
+
+        return data.newUser;
+      } catch (error) {
+        createError(error);
+      }
+    },
+    logout: (_, __, ctx) => {
+      if (ctx.req.userID) {
+        ctx.req.session.destroy(() => console.log("Logged out"));
+      }
+      return true;
     },
     login: async (_, args, ctx) => {
-      const { args: LoginCridentials } = args;
-      const { data } = await axios.post(
-        USER_SERVICE + "/login",
-        LoginCridentials
-      );
-      ctx.req.session.userID = data.user.id;
+      const { args: loginCridentials } = args;
 
-      return data.user;
+      try {
+        await validateSchema(loginCridentials, "LOGIN");
+      } catch (error) {
+        createValidationError(error);
+      }
+
+      try {
+        const { data } = await axios.post(
+          USER_SERVICE + "/login",
+          loginCridentials
+        );
+
+        setJWT(ctx.req, data.user.id);
+
+        return data.user;
+      } catch (error) {
+        createError(error);
+      }
     },
   },
   Query: {
     getUser: async (_, __, ctx) => {
-      const session = ctx.req.session.userID;
+      const session = ctx.req.userID;
+
       if (!session) {
         throw new AuthenticationError("User unauthorized");
       }
+      try {
+        const { data } = await axios.get(USER_SERVICE + `/${session}`);
 
-      const { data } = await axios.get(USER_SERVICE + `/${session}`);
-
-      return data.user;
+        return data.user;
+      } catch (error) {
+        createError(error);
+      }
     },
   },
 };

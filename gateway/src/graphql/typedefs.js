@@ -27,6 +27,7 @@ const typeDefs = gql`
   type Mutation {
     register(args: RegisterCridentials!): User!
     login(args: LoginCridentials!): User!
+    logout: Boolean
   }
 `;
 

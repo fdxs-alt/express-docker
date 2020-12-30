@@ -6,8 +6,8 @@ const cors = require("cors");
 const session = require("express-session");
 const connectRedis = require("connect-redis");
 const { ApolloServer } = require("apollo-server-express");
-const { resolvers, typeDefs } = require("./graphql/index");
-const { path } = require("./utils/constants");
+const { resolvers, typeDefs } = require("./graphql/.");
+const { path, jwtMiddleware, COOKIE_NAME, MAX_AGE } = require("./utils/.");
 
 const main = async () => {
   const app = express();
@@ -21,17 +21,19 @@ const main = async () => {
   app.use(
     session({
       store: new RedisStore({ client: redis }),
-      name: "rs",
+      name: COOKIE_NAME,
       secret: process.env.REDIS_SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
         secure: false,
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 7,
+        maxAge: MAX_AGE,
       },
     })
   );
+
+  app.use(jwtMiddleware);
 
   app.use(
     cors({
