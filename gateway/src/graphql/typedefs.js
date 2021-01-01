@@ -56,7 +56,7 @@ const typeDefs = gql`
     login(args: LoginCridentials!): User!
     logout: Boolean!
     createNote(args: NoteData!): Note!
-    deleteAllUsersNotes(id: ID!): Success!
+    deleteAllUsersNotes: Success!
     deleteNote(id: ID!): Success!
     updateNote(args: UpdateNoteData!): Note!
   }
