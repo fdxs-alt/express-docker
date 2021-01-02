@@ -38,13 +38,22 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
+      origin: "http://localhost:8080",
     })
   );
+
+  app.get("/auth", (req, res) => {
+    res.json({ auth: !!req.userID });
+  });
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }) => ({ req, redis }),
+    formatError: (error) => {
+      console.log(error);
+      return error;
+    },
   });
 
   server.applyMiddleware({ app, path, cors: false });

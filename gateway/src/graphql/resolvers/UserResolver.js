@@ -63,10 +63,10 @@ module.exports = {
   Query: {
     getUser: async (_, __, ctx) => {
       const session = ctx.req.userID;
-
       if (!session) {
         throw new AuthenticationError("User unauthorized");
       }
+
       try {
         const { data } = await axios.get(USER_SERVICE + `/${session}`);
 
