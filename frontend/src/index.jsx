@@ -8,6 +8,7 @@ import {
 } from "@apollo/client";
 import { GATEWAY_URL } from "./utils/constants";
 import isAuth from "./graphql/isAuth";
+import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import App from "./App";
 
 const client = new ApolloClient({
@@ -30,7 +31,10 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <ChakraProvider>
+        <App />
+        <CSSReset />
+      </ChakraProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")

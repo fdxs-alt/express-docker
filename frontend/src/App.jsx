@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Routes from "./routes/Routes";
 import { GATEWAY_URL } from "./utils/constants";
 import isAuth from "./graphql/isAuth";
-
 const App = () => {
   const [loading, setLoading] = useState(false);
 
