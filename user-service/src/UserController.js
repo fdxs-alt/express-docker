@@ -40,7 +40,13 @@ class UserController {
   static async login(req, res, next) {
     const { email, password } = req.body;
 
-    const { dataValues } = await UserModelMethods.findUser({ email });
+    const user = await UserModelMethods.findUser({ email });
+
+    if (!user) {
+      return next(createHttpError(400, "Email or password is wrong"));
+    }
+
+    const { dataValues } = user;
 
     const { password: hashedPassword, ...rest } = dataValues;
 
