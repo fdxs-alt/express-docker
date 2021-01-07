@@ -17,7 +17,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "../graphql/mutation.js";
-import isAuth from "../graphql/isAuth";
 import { useHistory } from "react-router-dom";
 const LoginForm = () => {
   const [login, { error: loginError, loading }] = useMutation(LOGIN_MUTATION);
@@ -27,7 +26,6 @@ const LoginForm = () => {
     const args = { ...data };
     try {
       await login({ variables: { args } });
-      isAuth(true);
       history.push("/notes");
     } catch (error) {}
   };
@@ -73,6 +71,11 @@ const LoginForm = () => {
             Log in
           </Button>
         </Center>
+        {loginError && (
+          <Center mt={5} fontWeight={700} fontSize="lg">
+            <Text color="red.500">{loginError.message}!</Text>
+          </Center>
+        )}
         <Center mt={5}>
           <Link
             as={RouterLink}
@@ -83,11 +86,6 @@ const LoginForm = () => {
             Don't have an account? Register!
           </Link>
         </Center>
-        {loginError && (
-          <Center mt={5} fontWeight={700} fontSize="lg">
-            <Text color="red.500">{loginError.message}!</Text>
-          </Center>
-        )}
       </Box>
     </Flex>
   );

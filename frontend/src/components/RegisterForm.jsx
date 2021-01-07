@@ -11,21 +11,24 @@ import {
   Link,
   Box,
   FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "../graphql/mutation";
-import isAuth from "../graphql/isAuth";
 
 const RegisterForm = () => {
-  const [registerFn, { error, loading }] = useMutation(REGISTER_MUTATION);
+  const [registerFn, { error: registerError, loading }] = useMutation(
+    REGISTER_MUTATION
+  );
+  const history = useHistory();
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = async (data) => {
-    const args = { ...data };
+    const { repeat_password, ...args } = data;
     try {
       await registerFn({ variables: { args } });
-      isAuth(true);
+      history.push("/notes");
     } catch (error) {}
   };
 
@@ -100,6 +103,11 @@ const RegisterForm = () => {
             Sign up
           </Button>
         </Center>
+        {registerError && (
+          <Center mt={5} fontWeight={700} fontSize="lg">
+            <Text color="red.500">{registerError.message}!</Text>
+          </Center>
+        )}
         <Center mt={5}>
           <Link as={RouterLink} to="/login" color="green.900" fontWeight={500}>
             Already have an account? Log in!

@@ -9,9 +9,3 @@ export const GET_USER_QUERY = gql`
     }
   }
 `;
-
-export const IS_AUTH_QUERY = gql`
-  query IsAuth {
-    isAuth @client
-  }
-`;

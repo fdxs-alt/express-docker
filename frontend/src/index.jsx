@@ -7,35 +7,25 @@ import {
   HttpLink,
 } from "@apollo/client";
 import { GATEWAY_URL } from "./utils/constants";
-import isAuth from "./graphql/isAuth";
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import App from "./App";
+import SessionStore from "./store/SessionStore";
 
 const client = new ApolloClient({
   link: new HttpLink({ credentials: "include", uri: GATEWAY_URL + "/graphql" }),
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          isAuth: {
-            read() {
-              return isAuth();
-            },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ChakraProvider>
-        <App />
-        <CSSReset />
-      </ChakraProvider>
-    </ApolloProvider>
+    <SessionStore>
+      <ApolloProvider client={client}>
+        <ChakraProvider>
+          <App />
+          <CSSReset />
+        </ChakraProvider>
+      </ApolloProvider>
+    </SessionStore>
   </React.StrictMode>,
   document.getElementById("root")
 );

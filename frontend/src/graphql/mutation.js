@@ -10,8 +10,8 @@ export const LOGIN_MUTATION = gql`
 `;
 
 export const REGISTER_MUTATION = gql`
-  mutation Login($args: RegisterCridentials!) {
-    login(args: $args) {
+  mutation register($args: RegisterCridentials!) {
+    register(args: $args) {
       id
       nick
     }
