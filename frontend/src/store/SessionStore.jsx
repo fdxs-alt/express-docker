@@ -4,12 +4,11 @@ import { GATEWAY_URL } from "../utils/constants";
 const SessionCtx = createContext(null);
 
 const SessionCtxProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     const getAuthState = async () => {
-      setLoading(true);
       try {
         const response = await fetch(GATEWAY_URL + "/auth", {
           credentials: "include",

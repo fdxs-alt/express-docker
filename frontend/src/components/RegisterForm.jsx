@@ -17,17 +17,20 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "../graphql/mutation";
+import { useSessionContext } from "../store/SessionStore";
 
 const RegisterForm = () => {
   const [registerFn, { error: registerError, loading }] = useMutation(
     REGISTER_MUTATION
   );
+  const { setIsAuth } = useSessionContext();
   const history = useHistory();
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = async (data) => {
     const { repeat_password, ...args } = data;
     try {
       await registerFn({ variables: { args } });
+      setIsAuth(true);
       history.push("/notes");
     } catch (error) {}
   };

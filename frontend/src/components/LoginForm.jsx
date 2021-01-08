@@ -18,14 +18,17 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "../graphql/mutation.js";
 import { useHistory } from "react-router-dom";
+import { useSessionContext } from "../store/SessionStore.jsx";
 const LoginForm = () => {
   const [login, { error: loginError, loading }] = useMutation(LOGIN_MUTATION);
+  const { setIsAuth } = useSessionContext();
   const { register, handleSubmit, errors } = useForm();
   const history = useHistory();
   const onSubmit = async (data) => {
     const args = { ...data };
     try {
       await login({ variables: { args } });
+      setIsAuth(true);
       history.push("/notes");
     } catch (error) {}
   };
