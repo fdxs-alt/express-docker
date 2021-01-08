@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Spacer, Flex, Heading, Link, Center } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Flex, Heading, Center } from "@chakra-ui/react";
+import HelloUser from "../components/HelloUser";
+
 const Main = () => {
   return (
     <Box height="100vh" w="100%">
@@ -20,30 +21,11 @@ const Main = () => {
       </Flex>
       <Flex w="100%" height="45%" justify="center" align="center">
         <Flex width="60%" align="center">
-          <Link
-            as={RouterLink}
-            to="/login"
-            size="lg"
-            fontSize={30}
-            color="teal.800"
-            fontWeight={500}
-          >
-            Sign in!
-          </Link>
-          <Spacer />
-          <Link
-            as={RouterLink}
-            to="/register"
-            fontSize={30}
-            color="teal.800"
-            fontWeight={500}
-          >
-            Sign up!
-          </Link>
+          <HelloUser />
         </Flex>
       </Flex>
       <Center height="5%" w="100%">
-        Created by Jakub Sukiennik @2020
+        Created by Jakub Sukiennik @2021
       </Center>
     </Box>
   );

@@ -12,6 +12,7 @@ import {
   FormControl,
   FormErrorMessage,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,18 +20,28 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION } from "../graphql/mutation.js";
 import { useHistory } from "react-router-dom";
 import { useSessionContext } from "../store/SessionStore.jsx";
+import { errorToast, successToast } from "../utils/toasts";
 const LoginForm = () => {
-  const [login, { error: loginError, loading }] = useMutation(LOGIN_MUTATION);
+  const [login, { loading }] = useMutation(LOGIN_MUTATION);
   const { setIsAuth } = useSessionContext();
   const { register, handleSubmit, errors } = useForm();
   const history = useHistory();
+  const toast = useToast();
+
   const onSubmit = async (data) => {
     const args = { ...data };
     try {
       await login({ variables: { args } });
       setIsAuth(true);
+      successToast(
+        toast,
+        "We've created your account for you.",
+        "Account created."
+      );
       history.push("/notes");
-    } catch (error) {}
+    } catch (error) {
+      errorToast(toast, error);
+    }
   };
 
   return (
@@ -74,11 +85,6 @@ const LoginForm = () => {
             Log in
           </Button>
         </Center>
-        {loginError && (
-          <Center mt={5} fontWeight={700} fontSize="lg">
-            <Text color="red.500">{loginError.message}!</Text>
-          </Center>
-        )}
         <Center mt={5}>
           <Link
             as={RouterLink}

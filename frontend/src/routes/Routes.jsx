@@ -4,6 +4,7 @@ import Main from "../pages/Main";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Notes from "../pages/Notes";
+import AuthRoute from "./AuthRoute";
 
 const Routes = () => {
   return (
@@ -12,7 +13,7 @@ const Routes = () => {
         <Route path="/" component={Main} exact />
         <Route path="/login" component={Login} exact />
         <Route path="/register" component={Register} exact />
-        <Route path="/notes" component={Notes} exact />
+        <AuthRoute path="/notes" component={Notes} exact />
       </Switch>
     </Router>
   );

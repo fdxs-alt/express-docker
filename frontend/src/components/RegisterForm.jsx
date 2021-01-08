@@ -11,28 +11,37 @@ import {
   Link,
   Box,
   FormErrorMessage,
-  Text,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "../graphql/mutation";
 import { useSessionContext } from "../store/SessionStore";
+import { errorToast, successToast } from "../utils/toasts";
 
 const RegisterForm = () => {
-  const [registerFn, { error: registerError, loading }] = useMutation(
-    REGISTER_MUTATION
-  );
-  const { setIsAuth } = useSessionContext();
   const history = useHistory();
+  const { setIsAuth } = useSessionContext();
+  const toast = useToast();
+  const [registerFn, { loading }] = useMutation(REGISTER_MUTATION);
+
   const { register, handleSubmit, errors } = useForm();
+
   const onSubmit = async (data) => {
     const { repeat_password, ...args } = data;
     try {
       await registerFn({ variables: { args } });
       setIsAuth(true);
+      successToast(
+        toast,
+        "We've created your account for you.",
+        "Account created."
+      );
       history.push("/notes");
-    } catch (error) {}
+    } catch (error) {
+      errorToast(toast, error);
+    }
   };
 
   return (
@@ -106,11 +115,6 @@ const RegisterForm = () => {
             Sign up
           </Button>
         </Center>
-        {registerError && (
-          <Center mt={5} fontWeight={700} fontSize="lg">
-            <Text color="red.500">{registerError.message}!</Text>
-          </Center>
-        )}
         <Center mt={5}>
           <Link as={RouterLink} to="/login" color="green.900" fontWeight={500}>
             Already have an account? Log in!

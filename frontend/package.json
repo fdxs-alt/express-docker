@@ -7,14 +7,15 @@
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-react-refresh": "^2.3.9",
-    "snowpack": "^2.18.4",
-    "@snowpack/plugin-sass": "^1.2.0"
+    "@snowpack/plugin-sass": "^1.2.0",
+    "snowpack": "^2.18.4"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
     "@chakra-ui/react": "^1.1.1",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "chakra-ui-markdown-renderer": "^1.0.0",
     "dayjs": "^1.9.8",
     "framer-motion": "^3.1.1",
     "graphql": "^15.4.0",
