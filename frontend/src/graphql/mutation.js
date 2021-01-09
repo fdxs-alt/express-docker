@@ -17,3 +17,15 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_NOTE_MUTATION = gql`
+  mutation CreateNote($args: NoteData!) {
+    createNote(args: $args) {
+      id
+      title
+      content
+      updatedAt
+      createdAt
+    }
+  }
+`;

@@ -33,11 +33,7 @@ const LoginForm = () => {
     try {
       await login({ variables: { args } });
       setIsAuth(true);
-      successToast(
-        toast,
-        "We've created your account for you.",
-        "Account created."
-      );
+      successToast(toast, "Logged in", "You were logged in successfully");
       history.push("/notes");
     } catch (error) {
       errorToast(toast, error);

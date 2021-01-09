@@ -23,7 +23,6 @@ const typeDefs = gql`
   input NoteData {
     title: String
     content: String
-    userID: ID
   }
 
   input UpdateNoteData {

@@ -18,14 +18,14 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <SessionStore>
-      <ApolloProvider client={client}>
-        <ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider>
+        <SessionStore>
           <App />
           <CSSReset />
-        </ChakraProvider>
-      </ApolloProvider>
-    </SessionStore>
+        </SessionStore>
+      </ChakraProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -7,3 +7,16 @@ export const GET_USER_QUERY = gql`
     }
   }
 `;
+
+export const GET_ALL_NOTES_QUERY = gql`
+  query GetUserNotes {
+    getUserNotes {
+      id
+      title
+      content
+      userID
+      updatedAt
+      createdAt
+    }
+  }
+`;

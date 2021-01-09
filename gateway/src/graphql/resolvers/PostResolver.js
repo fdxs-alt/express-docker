@@ -12,8 +12,10 @@ module.exports = {
 
       const { args: createNoteData } = args;
 
+      const noteData = { ...createNoteData, userID };
+
       try {
-        const { data } = await axios.post(`${NOTE_SERVICE}/`, createNoteData);
+        const { data } = await axios.post(`${NOTE_SERVICE}/`, noteData);
 
         return data.newNote;
       } catch (error) {
