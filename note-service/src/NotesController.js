@@ -9,7 +9,9 @@ class NotesController {
       const newNote = await NoteModelMethods.createNote(title, content, userID);
       res.status(201).json({ newNote });
     } catch (error) {
-      return next(createError(500, "Error occured during creation of the note"));
+      return next(
+        createError(500, "Error occured during creation of the note")
+      );
     }
   }
 
@@ -67,9 +69,15 @@ class NotesController {
       return next(createError(400, "There is no such note"));
     }
 
-    const updatedNote = NoteModelMethods.updateNote(title, content, id);
+    try {
+      singleNote.title = title;
+      singleNote.content = content;
+      await singleNote.save();
 
-    res.status(200).json({ updatedNote });
+      res.status(200).json({ updatedNote: singleNote });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

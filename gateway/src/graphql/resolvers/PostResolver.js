@@ -61,7 +61,7 @@ module.exports = {
 
       const { args: data } = args;
 
-      const { id, updateNoteData } = data;
+      const { id, ...updateNoteData } = data;
 
       try {
         const { data } = await axios.patch(

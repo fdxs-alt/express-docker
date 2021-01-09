@@ -29,3 +29,23 @@ export const CREATE_NOTE_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_NOTE_MUTATION = gql`
+  mutation UpdateNote($args: UpdateNoteData!) {
+    updateNote(args: $args) {
+      id
+      title
+      content
+      updatedAt
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_NOTE_MUTATION = gql`
+  mutation DeleteNote($id: ID!) {
+    deleteNote(id: $id) {
+      success
+    }
+  }
+`;

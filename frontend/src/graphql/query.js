@@ -20,3 +20,13 @@ export const GET_ALL_NOTES_QUERY = gql`
     }
   }
 `;
+
+export const GET_SPECIFIC_NOTE_QUERY = gql`
+  query getSpecificNote($id: ID!) {
+    getSpecificNote(id: $id) {
+      id
+      title
+      content
+    }
+  }
+`;
