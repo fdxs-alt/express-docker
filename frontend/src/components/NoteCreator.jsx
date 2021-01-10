@@ -11,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   Spacer,
+  Switch,
 } from "@chakra-ui/react";
 import { useMutation } from "@apollo/client";
 import {
@@ -30,6 +31,8 @@ const NoteCreator = () => {
     setTitle,
     setValue,
     resetValues,
+    editMode,
+    setEditMode,
   } = useNoteStore();
   const [createNote, { loading }] = useMutation(CREATE_NOTE_MUTATION);
 
@@ -58,12 +61,14 @@ const NoteCreator = () => {
             data: { getUserNotes: [prevNotes, newNoteData] },
           });
           setSelectedID(newNoteData.createNote.id);
+          setEditMode(false);
         },
       });
     } else {
       await updateNote({
         variables: { args: { title, content: value, id: selectedID } },
       });
+      setEditMode(false);
     }
   };
 
@@ -80,10 +85,10 @@ const NoteCreator = () => {
       borderWidth={2}
       borderStyle="solid"
     >
-      <Flex padding={5} alignItems="flex-end" w="50%">
+      <Flex padding={5} alignItems="flex-end" w="100%">
         <FormControl
           id="email"
-          w="70%"
+          w="40%"
           isDisabled={loading || updateNoteLoading || deleteNoteLoading}
         >
           <FormLabel>Note title</FormLabel>
@@ -95,12 +100,15 @@ const NoteCreator = () => {
           />
         </FormControl>
         <Spacer />
-        <Button
-          type="submit"
-          isLoading={loading || updateNoteLoading || deleteNoteLoading}
-        >
-          {selectedID ? "Update" : "Save"}
-        </Button>
+        {editMode && (
+          <Button
+            type="submit"
+            isLoading={loading || updateNoteLoading || deleteNoteLoading}
+          >
+            {selectedID ? "Update" : "Save"}
+          </Button>
+        )}
+
         <Spacer />
         <Button
           onClick={async () => {
@@ -127,6 +135,7 @@ const NoteCreator = () => {
                 },
               });
               setSelectedID();
+              setEditMode(true);
               resetValues();
             }
           }}
@@ -135,26 +144,40 @@ const NoteCreator = () => {
         >
           {selectedID ? "Delete" : "Clear"}
         </Button>
+        <Spacer />
+        <FormControl display="flex" w="35%">
+          <FormLabel htmlFor="preview">Edit mode?</FormLabel>
+          <Switch
+            id="email-alerts"
+            onChange={() => setEditMode((prev) => !prev)}
+            isChecked={editMode}
+          />
+        </FormControl>
       </Flex>
       <Flex w="100%" h="80%" padding={5} overflow="auto" justify="center">
-        <Textarea
-          w="45%"
-          h="100%"
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
-          resize="none"
-          placeholder="Type your note here..."
-          focusBorderColor="green.400"
-          borderWidth={2}
-        />
-        <Divider orientation="vertical" m="0 40px" />
+        {editMode && (
+          <>
+            <Textarea
+              w="45%"
+              h="100%"
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+              resize="none"
+              placeholder="Type your note here..."
+              focusBorderColor="green.400"
+              borderWidth={2}
+            />
+            <Divider orientation="vertical" m="0 40px" />
+          </>
+        )}
         <Box
-          w="45%"
+          w={editMode ? `45%` : `100%`}
           p={1}
           borderColor="gray.400"
           borderWidth={2}
           borderStyle="solid"
           borderRadius={8}
+          overflowY="auto"
         >
           <ReactMarkdown
             children={value}

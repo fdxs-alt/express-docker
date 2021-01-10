@@ -8,7 +8,7 @@ const NoteStoreProvider = ({ children }) => {
   const [selectedID, setSelectedID] = useState("");
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
-
+  const [editMode, setEditMode] = useState(true);
   const resetValues = useCallback(() => {
     setTitle("");
     setValue("");
@@ -30,6 +30,8 @@ const NoteStoreProvider = ({ children }) => {
         setValue,
         resetValues,
         setValues,
+        editMode,
+        setEditMode,
       }}
     >
       {children}
