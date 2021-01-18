@@ -7,7 +7,7 @@ const Main = () => {
     <Box height="100vh" w="100%">
       <Flex
         height="50%"
-        bg="green.400"
+        bg="cyan.500"
         justify="center"
         align="center"
         direction="column"
@@ -15,7 +15,13 @@ const Main = () => {
         <Heading as="h1" size="3xl" color="white">
           Notedly
         </Heading>
-        <Heading as="h4" size="xl" color="teal.50" marginTop={30}>
+        <Heading
+          as="h4"
+          size="xl"
+          color="teal.50"
+          marginTop={30}
+          textAlign="center"
+        >
           Only notes tool you will ever need!
         </Heading>
       </Flex>

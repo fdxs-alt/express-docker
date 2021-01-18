@@ -11,8 +11,8 @@ import {
   Box,
   FormControl,
   FormErrorMessage,
-  Text,
   useToast,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -27,13 +27,14 @@ const LoginForm = () => {
   const { register, handleSubmit, errors } = useForm();
   const history = useHistory();
   const toast = useToast();
+  const [isTablet] = useMediaQuery("(max-width: 768px)");
 
   const onSubmit = async (data) => {
     const args = { ...data };
     try {
       await login({ variables: { args } });
       setIsAuth(true);
-      successToast(toast, "Logged in", "You were logged in successfully");
+      successToast(toast, "You were logged in successfully", "Logged in");
       history.push("/notes");
     } catch (error) {
       errorToast(toast, error);
@@ -44,14 +45,19 @@ const LoginForm = () => {
     <Flex
       justify="center"
       align="center"
-      width="45%"
+      width={isTablet ? "100%" : "45%"}
       height="100%"
       direction="column"
     >
       <Heading as="h5" size="lg">
         Sign in
       </Heading>
-      <Box onSubmit={handleSubmit(onSubmit)} as="form" mt={5} w="50%">
+      <Box
+        onSubmit={handleSubmit(onSubmit)}
+        as="form"
+        mt={5}
+        width={isTablet ? "80%" : "50%"}
+      >
         <FormControl isInvalid={errors.email} isDisabled={loading}>
           <FormLabel mt={2}>Email address</FormLabel>
           <Input type="email" name="email" ref={register({ required: true })} />
@@ -75,7 +81,8 @@ const LoginForm = () => {
           <Button
             isLoading={loading}
             size="lg"
-            colorScheme="green"
+            colorScheme="cyan"
+            color="white"
             type="submit"
           >
             Log in
@@ -85,7 +92,7 @@ const LoginForm = () => {
           <Link
             as={RouterLink}
             to="/register"
-            color="green.900"
+            color="cyan.900"
             fontWeight={500}
           >
             Don't have an account? Register!

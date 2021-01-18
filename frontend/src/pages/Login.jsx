@@ -1,14 +1,15 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
-import { Flex, Spacer } from "@chakra-ui/react";
+import { Flex, Spacer, useMediaQuery } from "@chakra-ui/react";
 import TitleSection from "../components/TitleSection";
 
 const Login = () => {
+  const [isTablet] = useMediaQuery("(max-width: 768px)");
   return (
     <Flex w="100%" height="100vh">
       <LoginForm />
-      <Spacer />
-      <TitleSection title="Explore the notes" />
+      {!isTablet && <Spacer />}
+      {!isTablet && <TitleSection title="Explore the notes" />}
     </Flex>
   );
 };

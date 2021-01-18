@@ -10,14 +10,15 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Notes from "../pages/Notes";
 import AuthRoute from "./AuthRoute";
+import PublicRoute from "./PublicRoute";
 
 const Routes = () => {
   return (
     <Router>
       <Switch>
         <Route path="/" component={Main} exact />
-        <Route path="/login" component={Login} exact />
-        <Route path="/register" component={Register} exact />
+        <PublicRoute path="/login" component={Login} exact />
+        <PublicRoute path="/register" component={Register} exact />
         <AuthRoute path="/notes" component={Notes} exact />
       </Switch>
     </Router>

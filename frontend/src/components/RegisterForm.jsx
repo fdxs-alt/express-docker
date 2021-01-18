@@ -12,6 +12,7 @@ import {
   Box,
   FormErrorMessage,
   useToast,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -25,7 +26,7 @@ const RegisterForm = () => {
   const { setIsAuth } = useSessionContext();
   const toast = useToast();
   const [registerFn, { loading }] = useMutation(REGISTER_MUTATION);
-
+  const [isTablet] = useMediaQuery("(max-width: 768px)");
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
@@ -48,7 +49,7 @@ const RegisterForm = () => {
     <Flex
       justify="center"
       align="center"
-      width="45%"
+      width={isTablet ? "100%" : "45%"}
       height="100%"
       direction="column"
     >
@@ -107,8 +108,9 @@ const RegisterForm = () => {
         </FormControl>
         <Center mt={5}>
           <Button
+            color="white"
             size="lg"
-            colorScheme="green"
+            colorScheme="cyan"
             type="submit"
             isLoading={loading}
           >
@@ -116,7 +118,7 @@ const RegisterForm = () => {
           </Button>
         </Center>
         <Center mt={5}>
-          <Link as={RouterLink} to="/login" color="green.900" fontWeight={500}>
+          <Link as={RouterLink} to="/login" color="cyan.900" fontWeight={500}>
             Already have an account? Log in!
           </Link>
         </Center>

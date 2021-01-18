@@ -49,3 +49,9 @@ export const DELETE_NOTE_MUTATION = gql`
     }
   }
 `;
+
+export const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout
+  }
+`;

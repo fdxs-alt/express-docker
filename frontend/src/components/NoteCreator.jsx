@@ -81,7 +81,7 @@ const NoteCreator = () => {
       flexDirection="column"
       as="form"
       onSubmit={onSave}
-      borderColor="green.400"
+      borderColor="cyan.500"
       borderWidth={2}
       borderStyle="solid"
     >
@@ -164,7 +164,7 @@ const NoteCreator = () => {
               value={value}
               resize="none"
               placeholder="Type your note here..."
-              focusBorderColor="green.400"
+              focusBorderColor="cyan.500"
               borderWidth={2}
             />
             <Divider orientation="vertical" m="0 40px" />
