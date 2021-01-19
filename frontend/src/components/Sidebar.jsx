@@ -6,6 +6,7 @@ import {
   Spinner,
   Text,
   useToast,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_NOTES_QUERY } from "../graphql/query";
@@ -22,14 +23,14 @@ const Sidebar = () => {
   const { setIsAuth } = useSessionContext();
   const toast = useToast();
   const [logout, { loading: logoutLoading }] = useMutation(LOGOUT_MUTATION);
-
+  const [isTablet] = useMediaQuery("(max-width: 768px)");
   const { setSelectedID, resetValues, setEditMode } = useNoteStore();
   if (error) return <Redirect to="/login" />;
 
   return (
     <Flex
-      w="20%"
-      p={10}
+      w={isTablet ? "35%" : "20%"}
+      p={isTablet ? 2 : 10}
       mh="100%"
       flexDirection="column"
       overflowY="auto"
@@ -89,12 +90,20 @@ const Sidebar = () => {
             key={el.id}
             flexDirection="column"
           >
-            <Heading as="h5" size="sm" color="teal.800" wordBreak="break-all">
+            <Heading
+              as="h5"
+              size="sm"
+              color="teal.800"
+              wordBreak="break-all"
+              textAlign="center"
+            >
               {el.title}
             </Heading>
 
-            <Text mt={1}>Updated: {dayjs(el.updatedAt).fromNow()}</Text>
-            <Text mt={1}>
+            <Text mt={1} textAlign="center">
+              Updated: {dayjs(el.updatedAt).fromNow()}
+            </Text>
+            <Text mt={1} textAlign="center">
               Created: {dayjs(el.createdAt).format("DD/MM/YYYY")}
             </Text>
             <Button

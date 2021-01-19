@@ -12,6 +12,7 @@ import {
   FormLabel,
   Spacer,
   Switch,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useMutation } from "@apollo/client";
 import {
@@ -35,7 +36,7 @@ const NoteCreator = () => {
     setEditMode,
   } = useNoteStore();
   const [createNote, { loading }] = useMutation(CREATE_NOTE_MUTATION);
-
+  const [isTablet] = useMediaQuery("(max-width: 768px)");
   const [updateNote, { loading: updateNoteLoading }] = useMutation(
     UPDATE_NOTE_MUTATION
   );
@@ -75,8 +76,8 @@ const NoteCreator = () => {
   return (
     <Flex
       w="100%"
-      h="80%"
-      padding={5}
+      h={isTablet ? "100%" : "80%"}
+      padding={isTablet ? 0 : 5}
       overflow="auto"
       flexDirection="column"
       as="form"
@@ -85,13 +86,19 @@ const NoteCreator = () => {
       borderWidth={2}
       borderStyle="solid"
     >
-      <Flex padding={5} alignItems="flex-end" w="100%">
+      <Flex
+        padding={5}
+        alignItems={isTablet ? "center" : "flex-end"}
+        w="100%"
+        direction={isTablet && "column"}
+      >
         <FormControl
           id="email"
-          w="40%"
+          w={isTablet ? "80%" : "40%"}
           isDisabled={loading || updateNoteLoading || deleteNoteLoading}
+          mb={isTablet && 2}
         >
-          <FormLabel>Note title</FormLabel>
+          <FormLabel textAlign={isTablet && "center"}>Note title</FormLabel>
           <Input
             type="text"
             value={title}
@@ -104,6 +111,8 @@ const NoteCreator = () => {
           <Button
             type="submit"
             isLoading={loading || updateNoteLoading || deleteNoteLoading}
+            mb={isTablet && 2}
+            w={isTablet && "60%"}
           >
             {selectedID ? "Update" : "Save"}
           </Button>
@@ -111,6 +120,8 @@ const NoteCreator = () => {
 
         <Spacer />
         <Button
+          w={isTablet && "60%"}
+          mb={isTablet && 2}
           onClick={async () => {
             if (!selectedID) {
               setValue("");
@@ -145,20 +156,31 @@ const NoteCreator = () => {
           {selectedID ? "Delete" : "Clear"}
         </Button>
         <Spacer />
-        <FormControl display="flex" w="35%">
-          <FormLabel htmlFor="preview">Edit mode?</FormLabel>
+        <FormControl display="flex" w={isTablet ? "60%" : "35%"}>
+          <FormLabel htmlFor="preview" margin="auto">
+            Edit mode?
+          </FormLabel>
           <Switch
             id="email-alerts"
             onChange={() => setEditMode((prev) => !prev)}
             isChecked={editMode}
+            margin="auto"
           />
         </FormControl>
       </Flex>
-      <Flex w="100%" h="80%" padding={5} overflow="auto" justify="center">
+      <Flex
+        w="100%"
+        h={isTablet ? "100%" : "80%"}
+        padding={5}
+        overflow="auto"
+        justify="center"
+        alignItems={isTablet && "center"}
+        direction={isTablet && "column"}
+      >
         {editMode && (
           <>
             <Textarea
-              w="45%"
+              w={isTablet ? "95%" : "45%"}
               h="100%"
               onChange={(e) => setValue(e.target.value)}
               value={value}
@@ -167,17 +189,23 @@ const NoteCreator = () => {
               focusBorderColor="cyan.500"
               borderWidth={2}
             />
-            <Divider orientation="vertical" m="0 40px" />
+            <Divider
+              orientation="vertical"
+              m="0 40px"
+              display={isTablet && "none"}
+            />
           </>
         )}
         <Box
-          w={editMode ? `45%` : `100%`}
+          w={isTablet ? "95%" : editMode ? "45%" : "95%"}
+          h="100%"
           p={1}
           borderColor="gray.400"
           borderWidth={2}
           borderStyle="solid"
           borderRadius={8}
           overflowY="auto"
+          mt={isTablet && 10}
         >
           <ReactMarkdown
             children={value}
